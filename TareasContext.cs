@@ -10,6 +10,21 @@ public class TareasContext: DbContext
   public TareasContext(DbContextOptions<TareasContext> options): base(options) { }
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    var categoriasInit = new List<Categoria>();
+
+    categoriasInit.Add(new Categoria {
+      CategoriaId = Guid.Parse("8a3d0828-ab86-42b4-9761-92bc5d94908b"),
+      Nombre = "Actividades Pendientes",
+      Peso = 20
+    });
+
+    categoriasInit.Add(new Categoria
+    {
+      CategoriaId = Guid.Parse("8a3d0828-ab86-42b4-9761-92bc5d949002"),
+      Nombre = "Actividades Personales",
+      Peso = 50
+    });
+
     modelBuilder.Entity<Categoria>(categoria => {
       categoria.ToTable("Categoria");
 
@@ -17,6 +32,28 @@ public class TareasContext: DbContext
       categoria.Property(c => c.Nombre).IsRequired().HasMaxLength(150);
       categoria.Property(c => c.Descripcion);
       categoria.Property(c => c.Peso);
+
+      categoria.HasData(categoriasInit);
+    });
+
+    var tareasInit = new List<Tarea>();
+
+    tareasInit.Add(new Tarea
+    {
+      TareaId = Guid.Parse("8a3d0828-ab86-42b4-9761-92bc5d949010"),
+      CategoriaId = Guid.Parse("8a3d0828-ab86-42b4-9761-92bc5d94908b"),
+      Titulo = "Pago de servicios públicos",
+      PrioridadTarea = Prioridad.Media,
+      FechaCreacion = DateTime.Now
+    });
+
+    tareasInit.Add(new Tarea
+    {
+      TareaId = Guid.Parse("8a3d0828-ab86-42b4-9761-92bc5d949011"),
+      CategoriaId = Guid.Parse("8a3d0828-ab86-42b4-9761-92bc5d949002"),
+      Titulo = "Terminar de ver película en Netflix",
+      PrioridadTarea = Prioridad.Baja,
+      FechaCreacion = DateTime.Now
     });
 
     modelBuilder.Entity<Tarea>(tarea => {
@@ -29,6 +66,8 @@ public class TareasContext: DbContext
       tarea.Property(t => t.PrioridadTarea);
       tarea.Property(t => t.FechaCreacion);
       tarea.Ignore(t => t.Resumen);
+
+      tarea.HasData(tareasInit);
     });
   }
 }
