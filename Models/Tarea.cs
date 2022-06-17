@@ -20,7 +20,15 @@ public class Tarea
   public virtual Categoria Categoria { get; set; } = null!;
 
   // [NotMapped]
-  public string? Resumen { get; set; }
+  public string? Resumen { 
+    get {
+      return Titulo + " " + Descripcion ?? "";
+    }
+
+    set {
+
+    }
+  }
 }
 public enum Prioridad
 {
